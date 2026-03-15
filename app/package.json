@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-pwa-assets": "pwa-assets-generator --config pwa-assets.config.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.6",
@@ -17,10 +18,12 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@vite-pwa/assets-generator": "^1.0.2",
     "@vitejs/plugin-vue": "^5.0.5",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.6",
-    "vite": "^6.2.1"
+    "vite": "^6.2.1",
+    "vite-plugin-pwa": "^1.2.0"
   }
 }
