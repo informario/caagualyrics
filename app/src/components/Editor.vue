@@ -55,11 +55,7 @@ async function editarCancion() {
   // Cambio: _id → id (Firestore usa id en vez de _id de MongoDB)
   if (!selectedSong.value || !selectedSong.value.id || !selectedSong.value.title || !selectedSong.value.lyrics) return
   try {
-    await editSong({
-      id: selectedSong.value.id,
-      title: selectedSong.value.title,
-      lyrics: selectedSong.value.lyrics
-    })
+    await editSong(selectedSong.value.id, selectedSong.value.title, selectedSong.value.lyrics)
     const response = await getSongs()
     songs.value = response
     selectedSong.value = null
@@ -72,7 +68,7 @@ async function eliminarCancion() {
   // Cambio: _id → id (Firestore usa id en vez de _id de MongoDB)
   if (!selectedSong.value || !selectedSong.value.id) return
   try {
-    await removeSong({ id: selectedSong.value.id })
+    await removeSong(selectedSong.value.id)
     const response = await getSongs()
     songs.value = response
     selectedSong.value = null
