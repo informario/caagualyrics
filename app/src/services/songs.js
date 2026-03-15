@@ -9,10 +9,18 @@ import {
     doc,
 } from "firebase/firestore";
 
+function sortSongsByTitle(songs) {
+    return [...songs].sort((a, b) =>
+        (a?.title || "").trim().localeCompare((b?.title || "").trim(), "es", {
+            sensitivity: "base",
+        })
+    );
+}
+
 // Lectura pública
 export async function getSongs() {
     const snapshot = await getDocs(collection(db, "songs"));
-    return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+    return sortSongsByTitle(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
 }
 
 // Agregar (requiere login)
