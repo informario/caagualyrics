@@ -40,7 +40,7 @@ function selectSong(song) {
 async function agregarCancion() {
   if (!newTitle.value || !newLyrics.value) return
   try {
-    await addSong({ title: newTitle.value, lyrics: newLyrics.value })
+    await addSong(newTitle.value, newLyrics.value)
     const response = await getSongs()
     songs.value = response
     newTitle.value = ''
