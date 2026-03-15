@@ -1,9 +1,24 @@
-import {makeRequest} from "@/services/api.js";
+// lib/authService.js
+import { auth } from "./firebase";
+import {
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+} from "firebase/auth";
 
-export const login = async (data) => {
-    return await makeRequest('post', '/auth/login', data);
-};
+// Login con email y password
+export async function login(email, password) {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+}
 
-export const isauth = async () => {
-    return await makeRequest('get', '/auth/isauth');
-};
+// Logout
+export async function logout() {
+    await signOut(auth);
+}
+
+// Escuchar cambios de sesión
+// Usalo en tu componente raíz: onAuthChange(user => setUser(user))
+export function onAuthChange(callback) {
+    return onAuthStateChanged(auth, callback);
+}

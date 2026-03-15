@@ -1,21 +1,36 @@
-import { makeRequest } from "@/services/api.js";
+// lib/songService.js
+import { db, auth } from "./firebase";
+import {
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    doc,
+} from "firebase/firestore";
 
-// Obtener todas las canciones
-export const getSongs = async () => {
-    return makeRequest('get', '/song');
-};
+// Lectura pública
+export async function getSongs() {
+    const snapshot = await getDocs(collection(db, "songs"));
+    return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
 
-// Agregar una nueva canción
-export const addSong = async (data) => {
-    return makeRequest('post', '/song', data);
-};
+// Agregar (requiere login)
+export async function addSong(title, lyrics) {
+    if (!auth.currentUser) throw new Error("No autenticado");
+    const docRef = await addDoc(collection(db, "songs"), { title, lyrics });
+    return { id: docRef.id, title, lyrics };
+}
 
-// Edita canción existente
-export const editSong = async (data) => {
-    return makeRequest('put', '/song', data);
-};
+// Editar (requiere login)
+export async function editSong(id, title, lyrics) {
+    if (!auth.currentUser) throw new Error("No autenticado");
+    await updateDoc(doc(db, "songs", id), { title, lyrics });
+    return { id, title, lyrics };
+}
 
-// Eliminar una canción por título
-export const removeSong = async (data) => {
-    return makeRequest('delete', '/song', data);
-};
+// Eliminar (requiere login)
+export async function removeSong(id) {
+    if (!auth.currentUser) throw new Error("No autenticado");
+    await deleteDoc(doc(db, "songs", id));
+}
